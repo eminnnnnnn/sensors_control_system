@@ -10,6 +10,17 @@
 #include "mlt_lcd.h"
 #include "font.h"
 
+// Позиции стрелок на дисплее при аутентификации
+
+#define UP_ARROW_X 7
+#define UP_ARROW_Y 2
+#define RIGHT_ARROW_X 8
+#define RIGHT_ARROW_Y 3
+#define DOWN_ARROW_X 7
+#define DOWN_ARROW_Y 4
+#define LEFT_ARROW_X 6
+#define LEFT_ARROW_Y 3
+
 typedef enum
 {
 	ROW_0,
@@ -84,5 +95,19 @@ void lcd_menu_init(void);
 ** Возвращаемое значение: none 
 */
 void lcd_menu_handler(menu_rows_t * cursor, menu_action_t action);
+
+/*
+** Описание: отображение стрелок
+** Параметры: none
+** Возвращаемое значение: none 
+*/
+void lcd_show_auth_arrows(void);
+
+/*
+** Описание: скрытие стрелок
+** Параметры: none
+** Возвращаемое значение: none 
+*/
+void lcd_hide_auth_arrows(void);
 
 #endif

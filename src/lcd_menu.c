@@ -72,9 +72,14 @@ uint8_t * get_symbol_array_for_LCD(const char symbol)
 		case '9': return dig_9;
 
 		case '.': return sym_pt;
-		case '<': return sym_cursor;
+		// case '<': return sym_cursor;
 		case '%': return sym_percent;
 		case ' ': return sym_sp;
+		case '>': return sym_arrow_right;
+		case '<': return sym_arrow_left;
+		case '^': return sym_arrow_up;
+		case '/': return sym_arrow_down;
+		case '!': return sym_exlam;
 
 		default: return sym_sp;
 	}
@@ -149,4 +154,20 @@ void lcd_menu_handler(menu_rows_t * cursor, menu_action_t action)
 
 	lcd_print_string(MENU_ROWS_NAMES[(*cursor)], (*cursor), NOT_SMOOTH, INVERTED);
 	lcd_print_string(MENU_ROWS_NAMES[prev_row], prev_row, NOT_SMOOTH, NOT_INVERTED);
+}
+
+void lcd_show_auth_arrows(void)
+{
+	LcdPutChar(sym_arrow_up, UP_ARROW_X, UP_ARROW_Y, NOT_SMOOTH, NOT_INVERTED);
+	LcdPutChar(sym_arrow_down, DOWN_ARROW_X, DOWN_ARROW_Y, NOT_SMOOTH, NOT_INVERTED);
+	LcdPutChar(sym_arrow_right, RIGHT_ARROW_X, RIGHT_ARROW_Y, NOT_SMOOTH, NOT_INVERTED);
+	LcdPutChar(sym_arrow_left, LEFT_ARROW_X, LEFT_ARROW_Y, NOT_SMOOTH, NOT_INVERTED);
+}
+
+void lcd_hide_auth_arrows(void)
+{
+	LcdPutChar(sym_sp, UP_ARROW_X, UP_ARROW_Y, NOT_SMOOTH, NOT_INVERTED);
+	LcdPutChar(sym_sp, DOWN_ARROW_X, DOWN_ARROW_Y, NOT_SMOOTH, NOT_INVERTED);
+	LcdPutChar(sym_sp, RIGHT_ARROW_X, RIGHT_ARROW_Y, NOT_SMOOTH, NOT_INVERTED);
+	LcdPutChar(sym_sp, LEFT_ARROW_X, LEFT_ARROW_Y, NOT_SMOOTH, NOT_INVERTED);
 }
