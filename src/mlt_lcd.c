@@ -223,6 +223,25 @@ void LcdClearChip (uint8_t Chip)
 	}
 }
 
+void LcdOnAndClear(void)
+{
+	uint8_t s;
+	do
+	{
+		s = ReadStatus(1);
+	} while ((s & 0x80) != 0x00); 
+	DispOn(1);
+	
+	do
+	{
+		s = ReadStatus(2);
+	} while ((s & 0x80) != 0x00);
+	DispOn(2);
+	
+	LcdClearChip(1);
+	LcdClearChip(2);
+}
+
 void LcdPutChar (uint8_t* array,
 				 int Xpos,
 				 int Ypos,

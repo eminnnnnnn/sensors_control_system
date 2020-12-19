@@ -165,6 +165,8 @@ uint8_t ReadData (uint8_t Chip);
 void LcdClearPage (uint8_t Chip, uint8_t Page);
 void LcdClearChip (uint8_t Chip);
 
+void LcdOnAndClear(void);
+
 /*
 ** Описание: отображение символа на дисплей
 ** Параметры: array - представление символа в виде массива байтов
