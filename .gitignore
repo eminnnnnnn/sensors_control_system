@@ -5,3 +5,4 @@ Listings/
 *.uvprojx
 *.uv*
 JLinkLog.txt
+*.scvd
