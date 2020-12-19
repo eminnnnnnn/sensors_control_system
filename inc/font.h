@@ -165,14 +165,18 @@ extern uint8_t sym_sp[8];          // пробел
 extern uint8_t sym_pt[8];          // точка
 extern uint8_t sym_degree_cels[8]; // oC
 extern uint8_t sym_percent[8];     // %
+extern uint8_t sym_arrow_right[8];
+extern uint8_t sym_arrow_up[8];
+extern uint8_t sym_arrow_down[8];
+extern uint8_t sym_arrow_left[8];
+extern uint8_t sym_exlam[8];
+
 /*
 uint8_t sym_lcm[8];
 uint8_t sym_rcm[8];
 */
 
-extern uint8_t sym_cursor[8]; // "<-"
-extern uint8_t grad_cels[8];  // oC
-/*
-uint8_t icon_mil[32];
-*/
+// extern uint8_t sym_cursor[8]; // "<-"
+// uint8_t icon_mil[32];
+
 #endif
