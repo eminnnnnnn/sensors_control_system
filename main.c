@@ -13,20 +13,20 @@
 int main(void)
 {
 	// RST_CLK_DeInit(); // функция меняет регистры батарейного домена BKP!!!
-	cpu_clock_init();
+	cpu_clock_init(); // инициализация тактовой частоты для CPU
 	// SystemCoreClockUpdate();
-	RST_CLK_PCLKcmd(RST_CLK_PCLK_RST_CLK, ENABLE);
-	RST_CLK_PCLKcmd(RST_CLK_PCLK_PORTA
-					| RST_CLK_PCLK_PORTB
-					| RST_CLK_PCLK_PORTE
-					| RST_CLK_PCLK_PORTC,
+	RST_CLK_PCLKcmd(RST_CLK_PCLK_RST_CLK, ENABLE);	// разрешение тактирования RST_CLK
+	RST_CLK_PCLKcmd(RST_CLK_PCLK_PORTA				// разрешение тактирования порта А
+					| RST_CLK_PCLK_PORTB			//  порта B
+					| RST_CLK_PCLK_PORTE			//   порта Е
+					| RST_CLK_PCLK_PORTC,			//    порта С
 					ENABLE
 				   );
-	RST_CLK_PCLKcmd(RST_CLK_PCLK_EEPROM, ENABLE);
+	RST_CLK_PCLKcmd(RST_CLK_PCLK_EEPROM, ENABLE); // разрешение тактирования блока EEPROM
 	
-	lcd_ports_init();
-	button_ports_init();
-	dht_ports_init();
+	lcd_ports_init();		// настройка выводов портов для LCD
+	button_ports_init();	// настройка выводов портов для кнопок
+	dht_ports_init();		// настройка выводов портов для датчика DHT11
 	
 	/*
 	** RTC initialization in main function in first programming of memory,
@@ -34,14 +34,15 @@ int main(void)
 	*/
 	// rtc_init();
 	
-	LcdInit();
-	LcdOnAndClear();
+	LcdInit();			// инициализация LCD
+	LcdOnAndClear();	// включение дисплея и "очистка"
 	
-	read_password_from_mem();
-	run_login();
+	read_password_from_mem();	// чтение правильного пароля из памяти (однократно)
+	run_login();				// процедура авторизации
 
-	menu_rows_t menu_cursor = ROW_0;
-	lcd_menu_init();
+	menu_rows_t menu_cursor = ROW_0; // курсор для навигации в меню
+	lcd_menu_init();				 // отображение меню
+	// цикл опроса кнопок "вверх", "вниз" и "выбрать" и обработки нажатий
 	while(1){
 		if (PORT_ReadInputDataBit(MDR_PORTB, PORT_Pin_5) == Bit_RESET)
 		{
@@ -56,7 +57,7 @@ int main(void)
 			lcd_menu_handler(&menu_cursor, MENU_SELECT);
 		}
 
-		mdr_delay_ms(150);
+		mdr_delay_ms(150); // задержка для подавления дребезга
 	}
 	return 0;
 }

@@ -165,6 +165,7 @@ uint8_t ReadData (uint8_t Chip);
 void LcdClearPage (uint8_t Chip, uint8_t Page);
 void LcdClearChip (uint8_t Chip);
 
+void LcdFullClear(void);
 void LcdOnAndClear(void);
 
 /*

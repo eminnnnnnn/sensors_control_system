@@ -1,6 +1,10 @@
 #ifndef SENSORS_H
 #define SENSORS_H
 
+/*
+** В этом модуле описаны интерфейсы для связи с датчиками
+*/
+
 #include <stdint.h>
 
 /*

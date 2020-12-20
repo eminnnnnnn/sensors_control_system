@@ -1,6 +1,10 @@
 #ifndef AUTH_H
 #define AUTH_H
 
+/*
+** В этом модуле описаны подпрограммы авторизации и смены пароля
+*/
+
 #include <stdint.h>
 
 #define PASSWORD_LENGTH 5

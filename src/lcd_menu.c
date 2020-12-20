@@ -138,6 +138,7 @@ void lcd_menu_init(void)
 
 void lcd_menu_handler(menu_rows_t * cursor, menu_action_t action)
 {	
+	// обработка нажатия кнопки "выбор"
 	if (action == MENU_SELECT)
 	{
 		switch (*cursor)
@@ -146,25 +147,25 @@ void lcd_menu_handler(menu_rows_t * cursor, menu_action_t action)
 			            return;
 			case ROW_1: lcd_show_humidity();
 				        return;
-			case ROW_2: LcdClearChip(1);
-						LcdClearChip(2);
+			case ROW_2: LcdFullClear();
 						lcd_show_auth_arrows();
-						input_new_password();
+						input_new_password(); // ввод нового пароля
 						lcd_hide_auth_arrows();
-						lcd_menu_init();
-						*cursor = ROW_0;
+						lcd_menu_init(); // отображение меню
+						*cursor = ROW_0; //  и перемещение курсора на первый пункт
 						return;
-			case ROW_3: LcdClearChip(1);
-						LcdClearChip(2);
-						run_login();
+			case ROW_3: LcdFullClear();
+						run_login();	// процедура авторизации
 						lcd_menu_init();
 						*cursor = ROW_0;
 						return;
 			default: return;
 		}
 	}
-	menu_rows_t prev_row = *cursor; // сохранение текущей позиции курсора
 	
+	// обработка нажатий кнопок навигации в меню ("вверх", "вниз")
+
+	menu_rows_t prev_row = *cursor; // сохранение текущей позиции курсора
 	// сначала проверка граничных значений
 	if ((*cursor == ROW_0) && (action == MENU_UP))
 	{
@@ -179,8 +180,9 @@ void lcd_menu_handler(menu_rows_t * cursor, menu_action_t action)
 		// перемещение курсора в соответствии с действием
 		*cursor = (menu_rows_t)((int)(*cursor) + (int)(action));
 	}
-
+	// выделение пункта, куда перемещен курсор
 	lcd_print_string(MENU_ROWS_NAMES[(*cursor)], (*cursor), NOT_SMOOTH, INVERTED);
+	// отмена выделения предыдущего пункта
 	lcd_print_string(MENU_ROWS_NAMES[prev_row], prev_row, NOT_SMOOTH, NOT_INVERTED);
 }
 
@@ -203,15 +205,17 @@ void lcd_hide_auth_arrows(void)
 void lcd_show_temperature(void)
 {
 	uint8_t sensor_data[DHT11_DATA_BYTES_SIZE - 1] = {0};
-	LcdClearChip(2);
-	dht11_send_start();
+	LcdClearChip(2);	// очистка правой половина дисплея
+	dht11_send_start();	// инициализация начала передачи данных
 	if (dht11_read_data(sensor_data) == DHT11_SUCCESS)
 	{
-		lcd_show_time(get_sec());
+		lcd_show_time(get_sec());	// фиксация и вывод времени, когда получено значение
 		if ((int8_t)sensor_data[DHT11_TEMP_INT_BYTE] < 0)
 		{
+			// если температура отрицательная
 			LcdPutChar(sym_minus, 10, 2, NOT_SMOOTH, NOT_INVERTED);
 		}
+		// отображение значения температуры
 		char tmp_symb = (sensor_data[DHT11_TEMP_INT_BYTE] / 10) + '0';
 		LcdPutChar(get_symbol_array_for_LCD(tmp_symb), 11, 2, NOT_SMOOTH, NOT_INVERTED);
 		tmp_symb = (sensor_data[DHT11_TEMP_INT_BYTE] % 10) + '0';
@@ -237,7 +241,8 @@ void lcd_show_humidity(void)
 	if (dht11_read_data(sensor_data) == DHT11_SUCCESS)
 	{
 		// uint32_t measure_time = get_sec();
-		lcd_show_time(get_sec());
+		lcd_show_time(get_sec()); // фиксация и вывод времени, когда получено значение
+		// отображение значения влажности
 		char tmp_symb = (sensor_data[DHT11_HUM_INT_BYTE] / 10) + '0';
 		LcdPutChar(get_symbol_array_for_LCD(tmp_symb), 11, 2, NOT_SMOOTH, NOT_INVERTED);
 		tmp_symb = (sensor_data[DHT11_HUM_INT_BYTE] % 10) + '0';
@@ -270,7 +275,9 @@ static void lcd_show_time(uint32_t sec_time)
 	LcdPutChar(get_symbol_array_for_LCD(tmp_symb), 10, 4, NOT_SMOOTH, NOT_INVERTED);
 	tmp_symb = (char)(hours % 10) + '0';
 	LcdPutChar(get_symbol_array_for_LCD(tmp_symb), 11, 4, NOT_SMOOTH, NOT_INVERTED);
+
 	LcdPutChar(sym_colon, 12, 4, NOT_SMOOTH, NOT_INVERTED);
+
 	tmp_symb = (char)(minutes / 10) + '0';
 	LcdPutChar(get_symbol_array_for_LCD(tmp_symb), 13, 4, NOT_SMOOTH, NOT_INVERTED);
 	tmp_symb = (char)(minutes % 10) + '0';

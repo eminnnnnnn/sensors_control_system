@@ -12,6 +12,7 @@ static uint8_t is_password_combination(uint32_t * combination)
 {
 	for (uint8_t i = 0; i < PASSWORD_LENGTH; ++i)
 	{
+		// Символы валидного пароля должны быть в диапазоне от 1 до 4
 		if ((combination[i] > (PASSW_DIRECTIONS_COUNT - 1))
 			||((passw_t)combination[i] == PASSW_DEFAULT)) // ?
 		{
@@ -47,8 +48,8 @@ static void change_password(const passw_t * user_password)
 	uint32_t tmp[PASSWORD_LENGTH] = {0};
 	for (uint8_t i = 0; i < PASSWORD_LENGTH; ++i)
 	{
-		correct_password[i] = user_password[i];
-		tmp[i] = (uint32_t)user_password[i];
+		correct_password[i] = user_password[i]; // изменение правильного пароля
+		tmp[i] = (uint32_t)user_password[i];	// преобразование для записи в память
 	}
 	write_password_to_flash(tmp, PASSWORD_LENGTH);
 }
@@ -70,6 +71,7 @@ void reset_user_password(passw_t * user_password)
 
 void run_login(void)
 {
+	// ожидание нажатия кнопки входа (начала авторизации)
 	lcd_print_string("  Press SELECT", 3, NOT_SMOOTH, NOT_INVERTED);
 	lcd_print_string("   to log in", 4, NOT_SMOOTH, NOT_INVERTED);
 	while (PORT_ReadInputDataBit(MDR_PORTC, PORT_Pin_2) == Bit_SET);
@@ -77,6 +79,7 @@ void run_login(void)
 	lcd_print_string("            ", 4, NOT_SMOOTH, NOT_INVERTED);
 
 	auth_status_t is_auth = AUTH_FAIL;
+	// ввод пароля, если он не задан (нет записи в памяти)
 	if (is_password_defined() == PASSWORD_UNDEFINED)
 	{
 		lcd_print_string("DEFINE PASSWORD", 3, NOT_SMOOTH, NOT_INVERTED);
@@ -110,16 +113,20 @@ void run_login(void)
 
 void read_password_from_mem(void)
 {
+	// рекомендуется выполнять эту функцию однократно в начале функции main,
+	// чтобы не было задержек связанных с частым обращением к памяти
 	uint32_t tmp[PASSWORD_LENGTH] = {0};
 	read_password_from_flash(tmp, PASSWORD_LENGTH);
 
-	if (is_password_combination(tmp))
+	if (is_password_combination(tmp)) // проверка считанных значений на валидность
 	{
 		for (uint8_t i = 0; i < PASSWORD_LENGTH; ++i)
 		{
-			correct_password[i] = (passw_t)tmp[i];
+			correct_password[i] = (passw_t)tmp[i]; // преобразование в тип passw_t
 		}
 	}
+	// если считанное из памяти значение невалидное, то в correct_password останутся
+	//  значения PASSW_DEFAULT
 }
 
 
@@ -146,12 +153,14 @@ void input_password(passw_t * user_passw)
 {
 	uint8_t i = 0;
 
+	// цикл опроса кнопок и запись соответствующих символов вводимого пароля
 	while (i < PASSWORD_LENGTH)
 	{
 		mdr_delay_ms(170);
 		if (PORT_ReadInputDataBit(MDR_PORTB, PORT_Pin_5) == Bit_RESET)
 		{
 			user_passw[i++] = PASSW_UP;
+			// кратковременная подсветка выбранной стрелки
 			LcdPutChar(sym_arrow_up, UP_ARROW_X, UP_ARROW_Y, NOT_SMOOTH, INVERTED);
 			mdr_delay_ms(170);
 			LcdPutChar(sym_arrow_up, UP_ARROW_X, UP_ARROW_Y, NOT_SMOOTH, NOT_INVERTED);

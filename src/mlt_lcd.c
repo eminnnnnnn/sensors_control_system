@@ -237,7 +237,10 @@ void LcdOnAndClear(void)
 		s = ReadStatus(2);
 	} while ((s & 0x80) != 0x00);
 	DispOn(2);
-	
+}
+
+void LcdFullClear(void)
+{
 	LcdClearChip(1);
 	LcdClearChip(2);
 }

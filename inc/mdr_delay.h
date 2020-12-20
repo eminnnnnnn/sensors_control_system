@@ -1,6 +1,10 @@
 #ifndef MDR_DELAY_H
 #define MDR_DELAY_H
 
+/*
+** В этом модуле описаны подпрограммы задержки
+*/
+
 #include <stdint.h>
 
 /*
