@@ -25,6 +25,7 @@ int main(void)
 	
 	lcd_ports_init();
 	button_ports_init();
+	dht_ports_init();
 
 	LcdInit();
 	LcdOnAndClear();
