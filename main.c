@@ -8,10 +8,11 @@
 #include "init_configs.h"
 #include "mdr_delay.h"
 #include "auth.h"
+#include "rtc.h"
 
 int main(void)
 {
-	RST_CLK_DeInit();
+	// RST_CLK_DeInit(); // функция меняет регистры батарейного домена BKP!!!
 	cpu_clock_init();
 	// SystemCoreClockUpdate();
 	RST_CLK_PCLKcmd(RST_CLK_PCLK_RST_CLK, ENABLE);
@@ -26,7 +27,13 @@ int main(void)
 	lcd_ports_init();
 	button_ports_init();
 	dht_ports_init();
-
+	
+	/*
+	** RTC initialization in main function in first programming of memory,
+	** in second programming initialization should be removed (temporary solution)
+	*/
+	// rtc_init();
+	
 	LcdInit();
 	LcdOnAndClear();
 	
