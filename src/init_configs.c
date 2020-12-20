@@ -118,3 +118,28 @@ init_status_t button_ports_init(void)
 	
 	return INIT_SUCCESS;
 }
+
+init_status_t dht_ports_init(void)
+{
+	// Начальная конфигурация структуры для инициализации портов
+
+    PORT_InitTypeDef PORT_InitStructure;
+    PORT_StructInit(&PORT_InitStructure); // заполнение структуры значениями по умолчанию
+
+    PORT_InitStructure.PORT_FUNC  = PORT_FUNC_PORT;    // режим работы - порт IO
+    PORT_InitStructure.PORT_MODE  = PORT_MODE_DIGITAL; // тип сигнала - цифровой
+    PORT_InitStructure.PORT_SPEED = PORT_SPEED_FAST;   // скорость - быстрый фронт (~20нс)
+	PORT_InitStructure.PORT_OE    = PORT_OE_OUT;       // направление сигнала - 
+	                                                   // двунаправленный, начальная
+	                                                   // конфигурация - на выход.
+	PORT_InitStructure.PORT_PULL_UP = PORT_PULL_UP_ON; // подтяжка вывода к питанию
+
+	/*
+	** Порт: PORTС
+	** Выводы: PС0 - Data
+	*/
+	PORT_InitStructure.PORT_Pin = PORT_Pin_0;
+	PORT_Init(MDR_PORTC, &PORT_InitStructure);
+	PORT_SetBits(MDR_PORTC, PORT_Pin_0);
+	return INIT_SUCCESS;
+}

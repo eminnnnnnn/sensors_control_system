@@ -26,11 +26,17 @@ init_status_t cpu_clock_init(void);
 init_status_t lcd_ports_init(void);
 
 /*
-** Описание: Начальная конфигурация портов для 
+** Описание: Начальная конфигурация портов для кнопок
 ** Параметры: none
 ** Возвращаемое значение: результат настройки INIT_SUCCESS или INIT_ERROR
 */
 init_status_t button_ports_init(void);
 
+/*
+** Описание: Начальная конфигурация портов для сенсора DHT11
+** Параметры: none
+** Возвращаемое значение: результат настройки INIT_SUCCESS или INIT_ERROR
+*/
+init_status_t dht_ports_init(void);
 
 #endif
