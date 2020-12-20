@@ -1,4 +1,5 @@
 #include "lcd_menu.h"
+#include "auth.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////
 /* ------------------------ PRIVATE FUNCTION DEFINITIONS ------------------------------ */
@@ -137,7 +138,24 @@ void lcd_menu_handler(menu_rows_t * cursor, menu_action_t action)
 {	
 	if (action == MENU_SELECT)
 	{
-		return;
+		switch (*cursor)
+		{
+			case ROW_0: return;
+			case ROW_1: return;
+			case ROW_2: LcdClearChip(1);
+						lcd_show_auth_arrows();
+						input_new_password();
+						lcd_hide_auth_arrows();
+						lcd_menu_init();
+						*cursor = ROW_0;
+						return;
+			case ROW_3: LcdClearChip(1);
+						run_login();
+						lcd_menu_init();
+						*cursor = ROW_0;
+						return;
+			default: return;
+		}
 	}
 	menu_rows_t prev_row = *cursor; // сохранение текущей позиции курсора
 	

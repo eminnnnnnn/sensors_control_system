@@ -68,6 +68,46 @@ void reset_user_password(passw_t * user_password)
 /* ----------------------- PUBLIC FUNCTION DEFINITIONS -------------------------------- */
 //////////////////////////////////////////////////////////////////////////////////////////
 
+void run_login(void)
+{
+	lcd_print_string("  Press SELECT", 3, NOT_SMOOTH, NOT_INVERTED);
+	lcd_print_string("   to log in", 4, NOT_SMOOTH, NOT_INVERTED);
+	while (PORT_ReadInputDataBit(MDR_PORTC, PORT_Pin_2) == Bit_SET);
+	lcd_print_string("              ", 3, NOT_SMOOTH, NOT_INVERTED);
+	lcd_print_string("            ", 4, NOT_SMOOTH, NOT_INVERTED);
+
+	auth_status_t is_auth = AUTH_FAIL;
+	if (is_password_defined() == PASSWORD_UNDEFINED)
+	{
+		lcd_print_string("DEFINE PASSWORD", 3, NOT_SMOOTH, NOT_INVERTED);
+		mdr_delay_ms(2000);
+		lcd_print_string("               ", 3, NOT_SMOOTH, NOT_INVERTED);
+		lcd_show_auth_arrows();
+		input_new_password();
+	}
+	else
+	{
+		while (is_auth == AUTH_FAIL)
+		{
+			lcd_show_auth_arrows();
+			is_auth = authenticate();
+			if (is_auth == AUTH_FAIL)
+			{
+				lcd_hide_auth_arrows();
+				lcd_print_string("   INCORRECT!", 3, NOT_SMOOTH, NOT_INVERTED);
+				lcd_print_string("   TRY AGAIN", 4, NOT_SMOOTH, NOT_INVERTED);
+				mdr_delay_ms(2000);
+				lcd_print_string("             ", 3, NOT_SMOOTH, NOT_INVERTED);
+				lcd_print_string("            ", 4, NOT_SMOOTH, NOT_INVERTED);
+			}
+		}
+	}
+	lcd_hide_auth_arrows();
+	lcd_print_string("    SUCCESS!", 3, NOT_SMOOTH, NOT_INVERTED);
+	mdr_delay_ms(2000);
+	lcd_print_string("            ", 3, NOT_SMOOTH, NOT_INVERTED);
+}
+
 void read_password_from_mem(void)
 {
 	uint32_t tmp[PASSWORD_LENGTH] = {0};
@@ -82,43 +122,11 @@ void read_password_from_mem(void)
 	}
 }
 
+
 auth_status_t authenticate(void)
 {
 	passw_t user_passw[PASSWORD_LENGTH] = {PASSW_DEFAULT};
-	uint8_t i = 0;
-	
-	while (i < PASSWORD_LENGTH)
-	{
-		mdr_delay_ms(170);
-		if (PORT_ReadInputDataBit(MDR_PORTB, PORT_Pin_5) == Bit_RESET)
-		{
-			user_passw[i++] = PASSW_UP;
-			LcdPutChar(sym_arrow_up, UP_ARROW_X, UP_ARROW_Y, NOT_SMOOTH, INVERTED);
-			mdr_delay_ms(170);
-			LcdPutChar(sym_arrow_up, UP_ARROW_X, UP_ARROW_Y, NOT_SMOOTH, NOT_INVERTED);
-		}
-		else if (PORT_ReadInputDataBit(MDR_PORTB, PORT_Pin_6) == Bit_RESET)
-		{
-			user_passw[i++] = PASSW_RIGHT;
-			LcdPutChar(sym_arrow_right, RIGHT_ARROW_X, RIGHT_ARROW_Y, NOT_SMOOTH, INVERTED);
-			mdr_delay_ms(170);
-			LcdPutChar(sym_arrow_right, RIGHT_ARROW_X, RIGHT_ARROW_Y, NOT_SMOOTH, NOT_INVERTED);
-		}
-		else if (PORT_ReadInputDataBit(MDR_PORTE, PORT_Pin_1) == Bit_RESET)
-		{
-			user_passw[i++] = PASSW_DOWN;
-			LcdPutChar(sym_arrow_down, DOWN_ARROW_X, DOWN_ARROW_Y, NOT_SMOOTH, INVERTED);
-			mdr_delay_ms(170);
-			LcdPutChar(sym_arrow_down, DOWN_ARROW_X, DOWN_ARROW_Y, NOT_SMOOTH, NOT_INVERTED);
-		}
-		else if (PORT_ReadInputDataBit(MDR_PORTE, PORT_Pin_3) == Bit_RESET)
-		{
-			user_passw[i++] = PASSW_LEFT;
-			LcdPutChar(sym_arrow_left, LEFT_ARROW_X, LEFT_ARROW_Y, NOT_SMOOTH, INVERTED);
-			mdr_delay_ms(170);
-			LcdPutChar(sym_arrow_left, LEFT_ARROW_X, LEFT_ARROW_Y, NOT_SMOOTH, NOT_INVERTED);
-		}
-	}
+	input_password(user_passw);
 	return try_login(user_passw);
 }
 
@@ -130,8 +138,14 @@ passw_state_t is_password_defined(void)
 void input_new_password(void)
 {
 	passw_t user_passw[PASSWORD_LENGTH] = {PASSW_DEFAULT};
+	input_password(user_passw);
+	change_password(user_passw);
+}
+
+void input_password(passw_t * user_passw)
+{
 	uint8_t i = 0;
-	
+
 	while (i < PASSWORD_LENGTH)
 	{
 		mdr_delay_ms(170);
@@ -164,5 +178,4 @@ void input_new_password(void)
 			LcdPutChar(sym_arrow_left, LEFT_ARROW_X, LEFT_ARROW_Y, NOT_SMOOTH, NOT_INVERTED);
 		}
 	}
-	change_password(user_passw);
 }

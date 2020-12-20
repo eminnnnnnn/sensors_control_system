@@ -50,7 +50,7 @@ typedef enum
 //////////////////////////////////////////////////////////////////////////////////////////
 
 // Названия пунктов меню
-static const char * MENU_ROWS_NAMES[] = {"Temperat", "Humidity", "Block", "New Code"};
+static const char * MENU_ROWS_NAMES[] = {"Temperat", "Humidity", "New Code", "Block"};
 
 //////////////////////////////////////////////////////////////////////////////////////////
 /* ------------------------ PRIVATE FUNCTION PROTOTYPES ------------------------------- */

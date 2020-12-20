@@ -77,6 +77,13 @@ static void change_password(const passw_t * user_password);
 //////////////////////////////////////////////////////////////////////////////////////////
 
 /*
+** Описание: подпрограмма входа в систему
+** Параметры: none
+** Возвращаемое значение: none
+*/
+void run_login(void);
+
+/*
 ** Описание: чтение пароля из памяти и запись в correct_password
 ** Параметры: none
 ** Возвращаемое значение: none
@@ -84,7 +91,7 @@ static void change_password(const passw_t * user_password);
 void read_password_from_mem(void);
 
 /*
-** Описание: ввод пароля с кнопок и проверка
+** Описание: аутентификация
 ** Параметры: none
 ** Возвращаемое значение: AUTH_SUCCESS, если введенный пароль верный, иначе - AUTH_FAIL
 */
@@ -103,5 +110,12 @@ passw_state_t is_password_defined(void);
 ** Возвращаемое значение: none
 */
 void input_new_password(void);
+
+/*
+** Описание: ввод пароля
+** Параметры: user_passw - структура для ввода
+** Возвращаемое значение: none
+*/
+void input_password(passw_t * user_passw);
 
 #endif
