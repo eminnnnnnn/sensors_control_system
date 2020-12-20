@@ -1,6 +1,8 @@
 #ifndef AUTH_H
 #define AUTH_H
 
+#include <stdint.h>
+
 #define PASSWORD_LENGTH 5
 // один раз считать пароль из памяти
 typedef enum
@@ -9,7 +11,8 @@ typedef enum
 	PASSW_UP,
 	PASSW_RIGHT,
 	PASSW_DOWN,
-	PASSW_LEFT
+	PASSW_LEFT,
+	PASSW_DIRECTIONS_COUNT
 } passw_t;
 
 typedef enum
@@ -17,6 +20,12 @@ typedef enum
 	AUTH_SUCCESS,
 	AUTH_FAIL
 } auth_status_t;
+
+typedef enum
+{
+	PASSWORD_DEFINED,
+	PASSWORD_UNDEFINED
+} passw_state_t;
 
 static passw_t correct_password[PASSWORD_LENGTH] = {PASSW_DEFAULT};
 
@@ -47,5 +56,25 @@ auth_status_t try_login(const passw_t * user_password);
 ** Возвращаемое значение: none
 */
 void reset_user_password(passw_t * user_password);
+
+/*
+** Описание: проверка считанного из памяти пароля
+** Параметры: none
+** Возвращаемое значение: PASSWORD_DEFINE, если пароль задан, иначе PASSWORD_UNDEFINED
+*/
+passw_state_t is_password_defined(void);
+
+/*
+** Описание: проверка комбинации на отсутствие недопустимых значений
+** Параметры: combination - массив чисел для проверки
+** Возвращаемое значение: 1, если комбинация корректная, иначе 0
+*/
+static uint8_t is_password_combination(uint32_t * combination);
+
+static uint8_t is_password_symbol(uint32_t symbol);
+
+void change_password(const passw_t * user_password);
+
+void input_new_password(void);
 
 #endif
