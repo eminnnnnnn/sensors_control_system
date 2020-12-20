@@ -9,9 +9,6 @@
 #define DATA_BIT_START_US 50
 #define ZERO_BIT_US 28 // 26 - 28 мкс
 #define ONE_BIT_US 70
-#define DHT11_DATA_PORT MDR_PORTC
-#define DHT11_DATA_PIN PORT_Pin_0
-#define DHT11_DATA_BYTES_SIZE 5
 
 dht11_status_t dht11_send_start(void)
 {
@@ -95,6 +92,7 @@ dht11_status_t dht11_read_data(uint8_t * out_data)
 			}
 		}
 	}
+	DHT11_DATA_PORT->OE |= DHT11_DATA_PIN;
 	if ((uint8_t)(buff[0] + buff[1] + buff[2] + buff[3]) != buff[4])
 	{
 		return DHT11_INCORRECT_DATA;

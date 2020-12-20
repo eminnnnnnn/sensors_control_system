@@ -56,6 +56,13 @@ static const char * MENU_ROWS_NAMES[] = {"Temperat", "Humidity", "New Code", "Bl
 /* ------------------------ PRIVATE FUNCTION PROTOTYPES ------------------------------- */
 //////////////////////////////////////////////////////////////////////////////////////////
 
+/*
+** Описание: Отображение сообщения об ошибке
+** Параметры: none
+** Возвращаемое значение: none
+*/
+static void lcd_show_sensor_error(void);
+
 // static uint8_t * get_symbol_array_for_LCD(const char * );
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -115,5 +122,19 @@ void lcd_show_auth_arrows(void);
 ** Возвращаемое значение: none 
 */
 void lcd_hide_auth_arrows(void);
+
+/*
+** Описание: отображение текущего значения температуры на дисплей
+** Параметры: none
+** Возвращаемое значение: none
+*/
+void lcd_show_temperature(void);
+
+/*
+** Описание: отображение текущего значения влажности на дисплей
+** Параметры: none
+** Возвращаемое значение: none
+*/
+void lcd_show_humidity(void);
 
 #endif

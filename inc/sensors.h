@@ -21,6 +21,14 @@
 **               + 8 бит контрольная сумма
 */
 
+#define DHT11_DATA_PORT MDR_PORTC
+#define DHT11_DATA_PIN PORT_Pin_0
+#define DHT11_DATA_BYTES_SIZE 5
+#define DHT11_HUM_INT_BYTE 0
+#define DHT11_HUM_DEC_BYTE 1
+#define DHT11_TEMP_INT_BYTE 2
+#define DHT11_TEMP_DEC_BYTE 3
+
 typedef enum
 {
 	DHT11_SUCCESS,
