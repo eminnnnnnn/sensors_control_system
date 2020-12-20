@@ -94,10 +94,10 @@ void run_login(void)
 			if (is_auth == AUTH_FAIL)
 			{
 				lcd_hide_auth_arrows();
-				lcd_print_string("   INCORRECT!", 3, NOT_SMOOTH, NOT_INVERTED);
+				lcd_print_string("     WRONG!", 3, NOT_SMOOTH, NOT_INVERTED);
 				lcd_print_string("   TRY AGAIN", 4, NOT_SMOOTH, NOT_INVERTED);
 				mdr_delay_ms(2000);
-				lcd_print_string("             ", 3, NOT_SMOOTH, NOT_INVERTED);
+				lcd_print_string("           ", 3, NOT_SMOOTH, NOT_INVERTED);
 				lcd_print_string("            ", 4, NOT_SMOOTH, NOT_INVERTED);
 			}
 		}

@@ -63,6 +63,13 @@ static const char * MENU_ROWS_NAMES[] = {"Temperat", "Humidity", "New Code", "Bl
 */
 static void lcd_show_sensor_error(void);
 
+/*
+** Описание: Отображение времени
+** Параметры: sec_time - время в секундах
+** Возвращаемое значение: none
+*/
+static void lcd_show_time(uint32_t sec_time);
+
 // static uint8_t * get_symbol_array_for_LCD(const char * );
 
 //////////////////////////////////////////////////////////////////////////////////////////

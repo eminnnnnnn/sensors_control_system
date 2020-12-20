@@ -171,6 +171,7 @@ extern uint8_t sym_arrow_down[8];
 extern uint8_t sym_arrow_left[8];
 extern uint8_t sym_exlam[8];
 extern uint8_t sym_minus[8];
+extern uint8_t sym_colon[8];
 
 /*
 uint8_t sym_lcm[8];
