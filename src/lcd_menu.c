@@ -1,6 +1,7 @@
 #include "lcd_menu.h"
 #include "auth.h"
 #include "sensors.h"
+#include "rtc.h"
 
 //////////////////////////////////////////////////////////////////////////////////////////
 /* ------------------------ PRIVATE FUNCTION DEFINITIONS ------------------------------ */
@@ -146,6 +147,7 @@ void lcd_menu_handler(menu_rows_t * cursor, menu_action_t action)
 			case ROW_1: lcd_show_humidity();
 				        return;
 			case ROW_2: LcdClearChip(1);
+						LcdClearChip(2);
 						lcd_show_auth_arrows();
 						input_new_password();
 						lcd_hide_auth_arrows();
@@ -153,6 +155,7 @@ void lcd_menu_handler(menu_rows_t * cursor, menu_action_t action)
 						*cursor = ROW_0;
 						return;
 			case ROW_3: LcdClearChip(1);
+						LcdClearChip(2);
 						run_login();
 						lcd_menu_init();
 						*cursor = ROW_0;
@@ -204,20 +207,21 @@ void lcd_show_temperature(void)
 	dht11_send_start();
 	if (dht11_read_data(sensor_data) == DHT11_SUCCESS)
 	{
+		lcd_show_time(get_sec());
 		if ((int8_t)sensor_data[DHT11_TEMP_INT_BYTE] < 0)
 		{
-			LcdPutChar(sym_minus, 10, 3, NOT_SMOOTH, NOT_INVERTED);
+			LcdPutChar(sym_minus, 10, 2, NOT_SMOOTH, NOT_INVERTED);
 		}
 		char tmp_symb = (sensor_data[DHT11_TEMP_INT_BYTE] / 10) + '0';
-		LcdPutChar(get_symbol_array_for_LCD(tmp_symb), 11, 3, NOT_SMOOTH, NOT_INVERTED);
+		LcdPutChar(get_symbol_array_for_LCD(tmp_symb), 11, 2, NOT_SMOOTH, NOT_INVERTED);
 		tmp_symb = (sensor_data[DHT11_TEMP_INT_BYTE] % 10) + '0';
-		LcdPutChar(get_symbol_array_for_LCD(tmp_symb), 12, 3, NOT_SMOOTH, NOT_INVERTED);
+		LcdPutChar(get_symbol_array_for_LCD(tmp_symb), 12, 2, NOT_SMOOTH, NOT_INVERTED);
 		/*
 		LcdPutChar(sym_pt, 11, 3, NOT_SMOOTH, NOT_INVERTED);
 		tmp_symb = sensor_data[DHT11_TEMP_DEC_BYTE] + '0';
-		LcdPutChar(get_symbol_array_for_LCD(tmp_symb), 12, 3, NOT_SMOOTH, NOT_INVERTED);
+		LcdPutChar(get_symbol_array_for_LCD(tmp_symb), 12, 2, NOT_SMOOTH, NOT_INVERTED);
 		*/
-		LcdPutChar(sym_degree_cels, 13, 3, NOT_SMOOTH, NOT_INVERTED);
+		LcdPutChar(sym_degree_cels, 13, 2, NOT_SMOOTH, NOT_INVERTED);
 	}
 	else
 	{
@@ -232,15 +236,18 @@ void lcd_show_humidity(void)
 	dht11_send_start();
 	if (dht11_read_data(sensor_data) == DHT11_SUCCESS)
 	{
+		// uint32_t measure_time = get_sec();
+		lcd_show_time(get_sec());
 		char tmp_symb = (sensor_data[DHT11_HUM_INT_BYTE] / 10) + '0';
-		LcdPutChar(get_symbol_array_for_LCD(tmp_symb), 11, 3, NOT_SMOOTH, NOT_INVERTED);
+		LcdPutChar(get_symbol_array_for_LCD(tmp_symb), 11, 2, NOT_SMOOTH, NOT_INVERTED);
 		tmp_symb = (sensor_data[DHT11_HUM_INT_BYTE] % 10) + '0';
-		LcdPutChar(get_symbol_array_for_LCD(tmp_symb), 12, 3, NOT_SMOOTH, NOT_INVERTED);
+		LcdPutChar(get_symbol_array_for_LCD(tmp_symb), 12, 2, NOT_SMOOTH, NOT_INVERTED);
 		/*
 		tmp_symb = sensor_data[DHT11_HUM_DEC_BYTE] + '0';
-		LcdPutChar(get_symbol_array_for_LCD(tmp_symb), 12, 3, NOT_SMOOTH, NOT_INVERTED);
+		LcdPutChar(get_symbol_array_for_LCD(tmp_symb), 12, 2, NOT_SMOOTH, NOT_INVERTED);
 		*/
-		LcdPutChar(sym_percent, 13, 3, NOT_SMOOTH, NOT_INVERTED);
+		LcdPutChar(sym_percent, 13, 2, NOT_SMOOTH, NOT_INVERTED);
+		// lcd_show_time(measure_time);
 	}
 	else
 	{
@@ -253,4 +260,19 @@ static void lcd_show_sensor_error(void)
 	LcdPutChar(lat_e, 11, 3, NOT_SMOOTH, INVERTED);
 	LcdPutChar(lat_r, 12, 3, NOT_SMOOTH, INVERTED);
 	LcdPutChar(lat_r, 13, 3, NOT_SMOOTH, INVERTED);
+}
+
+static void lcd_show_time(uint32_t sec_time)
+{
+	uint32_t minutes = (sec_time / 60) % 60;
+	uint32_t hours = sec_time / 3600;
+	char tmp_symb = (char)(hours / 10) + '0';
+	LcdPutChar(get_symbol_array_for_LCD(tmp_symb), 10, 4, NOT_SMOOTH, NOT_INVERTED);
+	tmp_symb = (char)(hours % 10) + '0';
+	LcdPutChar(get_symbol_array_for_LCD(tmp_symb), 11, 4, NOT_SMOOTH, NOT_INVERTED);
+	LcdPutChar(sym_colon, 12, 4, NOT_SMOOTH, NOT_INVERTED);
+	tmp_symb = (char)(minutes / 10) + '0';
+	LcdPutChar(get_symbol_array_for_LCD(tmp_symb), 13, 4, NOT_SMOOTH, NOT_INVERTED);
+	tmp_symb = (char)(minutes % 10) + '0';
+	LcdPutChar(get_symbol_array_for_LCD(tmp_symb), 14, 4, NOT_SMOOTH, NOT_INVERTED);
 }

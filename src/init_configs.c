@@ -17,9 +17,6 @@ init_status_t cpu_clock_init(void)
                             | (1 << 8));    // источник для HCLK - CPU_C3
 
     // CPU_C1 = CPU_C2 = CPU_C3 = HCLK = 8 MHz
-
-    MDR_BKP->REG_0E |= (0 << 0);    // режим встроенного регулятора напряжения DUcc
-    MDR_BKP->REG_0E |= (0 << 3);    // выбор доп.стабилизирующей нагрузки
     return INIT_SUCCESS;
 }
 
