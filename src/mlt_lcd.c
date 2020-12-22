@@ -4,8 +4,8 @@ void SetDataBits (uint8_t value)
 {
 	MDR_PORTA->RXTX &= 0xFFC0;
 	MDR_PORTA->RXTX |= (value & 0x3F); 
-	MDR_PORTB->RXTX &= 0xFFF3;
-	MDR_PORTB->RXTX |= ((value >> 4) & 0x0c);
+	MDR_PORTF->RXTX &= 0xFFF3;
+	MDR_PORTF->RXTX |= ((value >> 4) & 0x0c);
 }
 
 void MltDelay (uint32_t value)

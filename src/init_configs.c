@@ -44,12 +44,12 @@ init_status_t lcd_ports_init(void)
     PORT_Init(MDR_PORTB, &PORT_InitStructure);
 
     /*
-	** Порт: PORTA
-	** Выводы: PA6 - Command/Data Select (A0), PA7 - Strobing (E)
+	** Порт: PORTC
+	** Выводы: PC0 - Command/Data Select (A0), PC1 - Strobing (E)
     ** Направление сигнала: Все выводы на выход
 	*/
-    PORT_InitStructure.PORT_Pin = (PORT_Pin_6 | PORT_Pin_7);
-    PORT_Init(MDR_PORTA, &PORT_InitStructure);
+    PORT_InitStructure.PORT_Pin = (PORT_Pin_0 | PORT_Pin_1);
+    PORT_Init(MDR_PORTC, &PORT_InitStructure);
 
 	// Конфигурация выводов для обмена данными
 	
@@ -66,14 +66,14 @@ init_status_t lcd_ports_init(void)
     PORT_Init(MDR_PORTA, &PORT_InitStructure);
 	
 	/* 
-	** Порт: PORTB
-	** Выводы: PB2, PB3 - Data Bus(DB6, DB7)
+	** Порт: PORTF
+	** Выводы: PF2, PF3 - Data Bus(DB6, DB7)
     ** Направление сигнала: Двунаправленный, начальная конфигурация - на вход.
 	**                      Направление будет меняться программно при чтении/записи
 	**                      макросами в модуле mlt_lcd
 	*/
     PORT_InitStructure.PORT_Pin = (PORT_Pin_2 | PORT_Pin_3);
-    PORT_Init(MDR_PORTB, &PORT_InitStructure);
+    PORT_Init(MDR_PORTF, &PORT_InitStructure);
 	
 	return INIT_SUCCESS;
 }
@@ -132,11 +132,11 @@ init_status_t dht_ports_init(void)
 	PORT_InitStructure.PORT_PULL_UP = PORT_PULL_UP_ON; // подтяжка вывода к питанию
 
 	/*
-	** Порт: PORTС
-	** Выводы: PС0 - Data
+	** Порт: PORTA
+	** Выводы: PA6 - Data
 	*/
-	PORT_InitStructure.PORT_Pin = PORT_Pin_0;
-	PORT_Init(MDR_PORTC, &PORT_InitStructure);
-	PORT_SetBits(MDR_PORTC, PORT_Pin_0);
+	PORT_InitStructure.PORT_Pin = PORT_Pin_6;
+	PORT_Init(MDR_PORTA, &PORT_InitStructure);
+	PORT_SetBits(MDR_PORTA, PORT_Pin_6);
 	return INIT_SUCCESS;
 }

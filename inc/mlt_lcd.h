@@ -89,14 +89,14 @@
 #define RES_PIN_PORT 	MDR_PORTB
 #define RES_PIN 		PORT_Pin_9
 
-#define STB_PIN_PORT 	MDR_PORTA
-#define STB_PIN 		PORT_Pin_7
+#define STB_PIN_PORT 	MDR_PORTC
+#define STB_PIN 		PORT_Pin_1
 
 #define RW_PIN_PORT 	MDR_PORTB
 #define RW_PIN 			PORT_Pin_10
 
-#define A0_PIN_PORT		MDR_PORTA
-#define A0_PIN			PORT_Pin_6
+#define A0_PIN_PORT		MDR_PORTC
+#define A0_PIN			PORT_Pin_0
 
 #define E1_PIN_PORT		MDR_PORTB
 #define E1_PIN			PORT_Pin_7
@@ -128,12 +128,12 @@
 
 #define Data_Dir_InputPA()  MDR_PORTA->OE &= 0xFFC0
 #define Data_Dir_OutputPA() MDR_PORTA->OE |= 0x003F
-#define Data_Dir_InputPB()  MDR_PORTB->OE &= 0xFFF3
-#define Data_Dir_OutputPB() MDR_PORTB->OE |= 0x000C
+#define Data_Dir_InputPB()  MDR_PORTF->OE &= 0xFFF3
+#define Data_Dir_OutputPB() MDR_PORTF->OE |= 0x000C
 
 // Получение данных с шины
 #define OutputData (uint8_t)(MDR_PORTA->RXTX & 0x3F) \
-				   | (uint8_t)((MDR_PORTB->RXTX << 4) & 0xC0)
+				   | (uint8_t)((MDR_PORTF->RXTX << 4) & 0xC0)
 
 typedef enum
 {

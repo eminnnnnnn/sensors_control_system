@@ -113,6 +113,7 @@ void run_login(void)
 			}
 			if (attempts == 3)
 			{
+				// 3 неудачные попытки - блокировка системы
 				wait_unblock();
 				attempts = 1;
 			}

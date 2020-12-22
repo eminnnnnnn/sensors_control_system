@@ -19,11 +19,12 @@ int main(void)
 	RST_CLK_PCLKcmd(RST_CLK_PCLK_PORTA				// разрешение тактирования порта А
 					| RST_CLK_PCLK_PORTB			//  порта B
 					| RST_CLK_PCLK_PORTE			//   порта Е
-					| RST_CLK_PCLK_PORTC,			//    порта С
+					| RST_CLK_PCLK_PORTC			//    порта С
+					| RST_CLK_PCLK_PORTF,			//     порта F
 					ENABLE
 				   );
 	RST_CLK_PCLKcmd(RST_CLK_PCLK_EEPROM, ENABLE); // разрешение тактирования блока EEPROM
-	
+
 	lcd_ports_init();		// настройка выводов портов для LCD
 	button_ports_init();	// настройка выводов портов для кнопок
 	dht_ports_init();		// настройка выводов портов для датчика DHT11
