@@ -54,6 +54,16 @@ static void change_password(const passw_t * user_password)
 	write_password_to_flash(tmp, PASSWORD_LENGTH);
 }
 
+static void wait_unblock(void)
+{
+	// ожидание нажатия кнопки входа (начала авторизации)
+	lcd_print_string("  Press SELECT", 3, NOT_SMOOTH, NOT_INVERTED);
+	lcd_print_string("   to log in", 4, NOT_SMOOTH, NOT_INVERTED);
+	while (PORT_ReadInputDataBit(MDR_PORTC, PORT_Pin_2) == Bit_SET);
+	lcd_print_string("              ", 3, NOT_SMOOTH, NOT_INVERTED);
+	lcd_print_string("            ", 4, NOT_SMOOTH, NOT_INVERTED);
+}
+
 /*
 void reset_user_password(passw_t * user_password)
 {
@@ -71,12 +81,8 @@ void reset_user_password(passw_t * user_password)
 
 void run_login(void)
 {
-	// ожидание нажатия кнопки входа (начала авторизации)
-	lcd_print_string("  Press SELECT", 3, NOT_SMOOTH, NOT_INVERTED);
-	lcd_print_string("   to log in", 4, NOT_SMOOTH, NOT_INVERTED);
-	while (PORT_ReadInputDataBit(MDR_PORTC, PORT_Pin_2) == Bit_SET);
-	lcd_print_string("              ", 3, NOT_SMOOTH, NOT_INVERTED);
-	lcd_print_string("            ", 4, NOT_SMOOTH, NOT_INVERTED);
+	
+	wait_unblock(); // ожидание разблокировки
 
 	auth_status_t is_auth = AUTH_FAIL;
 	// ввод пароля, если он не задан (нет записи в памяти)
@@ -90,18 +96,25 @@ void run_login(void)
 	}
 	else
 	{
+		uint8_t attempts = 1;
 		while (is_auth == AUTH_FAIL)
 		{
 			lcd_show_auth_arrows();
 			is_auth = authenticate();
 			if (is_auth == AUTH_FAIL)
 			{
+				attempts++;
 				lcd_hide_auth_arrows();
 				lcd_print_string("     WRONG!", 3, NOT_SMOOTH, NOT_INVERTED);
 				lcd_print_string("   TRY AGAIN", 4, NOT_SMOOTH, NOT_INVERTED);
 				mdr_delay_ms(2000);
 				lcd_print_string("           ", 3, NOT_SMOOTH, NOT_INVERTED);
 				lcd_print_string("            ", 4, NOT_SMOOTH, NOT_INVERTED);
+			}
+			if (attempts == 3)
+			{
+				wait_unblock();
+				attempts = 1;
 			}
 		}
 	}

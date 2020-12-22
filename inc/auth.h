@@ -70,6 +70,13 @@ static auth_status_t try_login(const passw_t * user_password);
 static void change_password(const passw_t * user_password);
 
 /*
+** Описание: ожидание нажатия кнопки для разблокировки
+** Параметры: none
+** Возвращаемое значение: none
+*/
+static void wait_unblock(void);
+
+/*
 ** Описание: сброс введенного пароля
 ** Параметры: user_password - введенный пароль
 ** Возвращаемое значение: none
