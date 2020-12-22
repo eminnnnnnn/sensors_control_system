@@ -96,7 +96,7 @@ void run_login(void)
 	}
 	else
 	{
-		uint8_t attempts = 1;
+		uint8_t attempts = 0;
 		while (is_auth == AUTH_FAIL)
 		{
 			lcd_show_auth_arrows();
@@ -115,7 +115,7 @@ void run_login(void)
 			{
 				// 3 неудачные попытки - блокировка системы
 				wait_unblock();
-				attempts = 1;
+				attempts = 0;
 			}
 		}
 	}
