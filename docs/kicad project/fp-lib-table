@@ -1,0 +1,4 @@
+(fp_lib_table
+  (lib (name MCU_RUS)(type KiCad)(uri C:/Users/emin2/Desktop/kicad-milandr-lib-master/modules/rus-mcu.pretty)(options "")(descr ""))
+  (lib (name MCU_MILANDR)(type KiCad)(uri C:/Users/emin2/Desktop/kicad-milandr-lib-master/modules)(options "")(descr ""))
+)

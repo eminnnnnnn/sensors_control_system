@@ -1,0 +1,15 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP DHT11
+D Temperature and humidity module
+K Digital temperature humidity sensor
+F http://akizukidenshi.com/download/ds/aosong/DHT11.pdf
+$ENDCMP
+#
+$CMP MT-12864j
+D Graphics Display 128x64px,  8b parallel, 1/64 Duty, 3.3V or 5V VDD
+K display LCD graphic
+F https://www.digchip.com/datasheets/parts/datasheet/1121/AG-12864E-pdf.php
+$ENDCMP
+#
+#End Doc Library
