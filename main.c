@@ -24,16 +24,16 @@ int main(void)
 					ENABLE
 				   );
 	RST_CLK_PCLKcmd(RST_CLK_PCLK_EEPROM, ENABLE); // разрешение тактирования блока EEPROM
+	RST_CLK_PCLKcmd(RST_CLK_PCLK_BKP, ENABLE); 	  // разрешение тактирования блока BKP
 
 	lcd_ports_init();		// настройка выводов портов для LCD
 	button_ports_init();	// настройка выводов портов для кнопок
 	dht_ports_init();		// настройка выводов портов для датчика DHT11
 	
-	/*
-	** RTC initialization in main function in first programming of memory,
-	** in second programming initialization should be removed (temporary solution)
-	*/
-	// rtc_init();
+	if ((MDR_BKP->REG_0F & BKP_REG_0F_RTC_EN) == 0)
+	{
+		rtc_init();
+	}
 	
 	LcdInit();			// инициализация LCD
 	LcdOnAndClear();	// включение дисплея и "очистка"
