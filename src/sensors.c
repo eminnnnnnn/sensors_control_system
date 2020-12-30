@@ -27,6 +27,7 @@ dht11_status_t dht11_send_start(void)
 	{
 		if (retries > (RESPONSE_WAIT_US / 2))
 		{
+			DHT11_DATA_PORT->OE |= DHT11_DATA_PIN;
 			return DHT11_TIMEOUT;
 		}
 		mdr_delay_us(2);
@@ -39,6 +40,7 @@ dht11_status_t dht11_send_start(void)
 	{
 		if (retries > (RESPONSE_LOW_US / 2))
 		{
+			DHT11_DATA_PORT->OE |= DHT11_DATA_PIN;
 			return DHT11_TIMEOUT;
 		}
 		mdr_delay_us(2);
@@ -51,6 +53,7 @@ dht11_status_t dht11_send_start(void)
 	{
 		if (retries > (RESPONSE_HIGH_US / 2))
 		{
+			DHT11_DATA_PORT->OE |= DHT11_DATA_PIN;
 			return DHT11_TIMEOUT;
 		}
 		mdr_delay_us(2);
@@ -76,6 +79,7 @@ dht11_status_t dht11_read_data(uint8_t * out_data)
 			{
 				if (retries > (DATA_BIT_START_US / 2))
 				{
+					DHT11_DATA_PORT->OE |= DHT11_DATA_PIN;
 					return DHT11_TIMEOUT;
 				}
 				mdr_delay_us(2);
@@ -95,6 +99,7 @@ dht11_status_t dht11_read_data(uint8_t * out_data)
 			{
 				if (retries > ((ONE_BIT_US - 3)/2))
 				{
+					DHT11_DATA_PORT->OE |= DHT11_DATA_PIN;
 					return DHT11_TIMEOUT;
 				}
 				mdr_delay_us(2);
